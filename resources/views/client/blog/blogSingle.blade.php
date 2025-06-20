@@ -82,8 +82,8 @@
 					<div class="response-area">
 						<h2>3 RESPONSES</h2>
 						<ul class="media-list">
-							@foreach($commentsLevel0 as $val)
-							<li class="media {{$val->id}}">
+							@foreach($commentsLevel0 as $val)							
+							<li class="media" id="{{$val->id}}">
 								<a class="pull-left" href="#">
 									<img style="width: 50px; height: 50px; object-fit: cover" class="media-object" src="{{ asset('upload/avatar/'.$val->avatar)}}" alt="">
 								</a>
@@ -117,7 +117,7 @@
 								<!-- level child -->
 								@foreach($commentsLevels as $val2)
 									@if($val2->level == $val->id)
-									<li class="media second-media {{$val->id}}">
+									<li class="media second-media">
 										<a class="pull-left" href="#">
 											<img style="width: 50px; height: 50px; object-fit: cover" class="media-object" src="{{ asset('upload/avatar/'.$val2->avatar)}}" alt="">
 										</a>
@@ -128,7 +128,6 @@
 												<li><i class="fa fa-calendar"></i> {{ explode(' ', $val2->created_at)[0] }}</li>
 											</ul>
 											<p>{{$val2->cmt}}</p>
-											<button class="btn btn-primary replay-button"><i class="fa fa-reply"></i>Replay</button>
 											
 											<div style="margin-bottom: 10px; display: none" class="replay-box">
 												<div class="row">
@@ -151,36 +150,6 @@
 									@endif
 								@endforeach
 							@endforeach
-
-							<li class="media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="images/blog/man-two.jpg" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-								</div>
-							</li>
-							<li class="media second-media">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="images/blog/man-three.jpg" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>Janis Gallagher</li>
-										<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-										<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
-								</div>
-							</li>
-							
 						</ul>					
 					</div><!--/Response-area-->
 					<div class="replay-box">
@@ -365,11 +334,10 @@
 											<li><i class="fa fa-calendar"></i>Now</li>
 										</ul>
 										<p>${data.cmt}</p>
-										<button class="btn btn-primary"><i class="fa fa-reply"></i>Replay</button>
 									</div>
 								</li>
 							`;
-							$('.' + id_comment).after(htmls);
+							$('#' + id_comment).after(htmls);
 
 						}
 					});
@@ -380,4 +348,6 @@
 			})
 
 		});
+
+		$('#slider').remove();
     </script>
