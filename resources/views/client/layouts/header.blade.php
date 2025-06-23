@@ -58,12 +58,19 @@
 					</div>
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
-							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
+							<ul class="nav navbar-nav">	
+								@if(Auth::Check())
+										<li><a href="{{url('/account/update')}}"><i class="fa fa-user"></i> Account</a></li>
+								@endif
+								
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="{{ url('login-user') }}"><i class="fa fa-lock"></i> Login</a></li>
+								@if(Auth::Check())
+									<li class="logout"><a href="{{ url('logout-user') }}"><i class="fa fa-lock"></i> logout</a></li>
+								@else
+									<li><a href="{{ url('login-user') }}"><i class="fa fa-lock"></i> Login</a></li>
+								@endif
 							</ul>
 						</div>
 					</div>
@@ -85,7 +92,7 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
+								<li><a href="{{ url('/')}}" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
@@ -115,3 +122,9 @@
 			</div>
 		</div><!--/header-bottom-->
 	</header><!--/header-->
+
+	<script src="{{ asset('client/js/jquery-1.9.1.min.js') }}"></script>
+	<script>
+		$(document).ready(function(){
+		})
+	</script>

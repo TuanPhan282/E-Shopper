@@ -1,7 +1,13 @@
 
 @extends('client.layouts.app')
-@section('content')
 
+@section('slide')
+    @include('client.layouts.slide')
+@endsection
+
+@section('content')
+@include('client.layouts.menu-left')
+<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
 						<div class="col-sm-4">
@@ -544,5 +550,5 @@
 						</div>
 					</div><!--/recommended_items-->
 					
-
+</div>
 @endsection()

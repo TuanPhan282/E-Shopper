@@ -7,6 +7,7 @@ use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CommentController;
+use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\CauThuController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OnePageController;
@@ -60,8 +61,15 @@ Route::get('/blog-single/{id}',[BlogController::class,'getBlogSingle']);
 Auth::routes();
 
 // - Client
+Route::get('/logout-user',[LoginController::class,'logout']);
+
 Route::post('/blog/rate/ajax',[BlogController::class,'postRateAjax']);
 Route::post('/blog/comment/ajax',[CommentController::class,'postCommentAjax']);
+
+Route::get('/account/update', [ClientController::class,'getUpdateAccount']);
+Route::post('/account/update', [ClientController::class,'postUpdateAccount']);
+
+Route::get('/account/my-product', [ProductController::class,'getMyProduct']);
 
 // - Admin
 

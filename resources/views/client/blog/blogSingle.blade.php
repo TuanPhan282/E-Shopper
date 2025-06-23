@@ -1,6 +1,7 @@
 @extends('client.layouts.app')
 @section('content')
-
+@include('client.layouts.menu-left')
+<div class="col-sm-9 padding-right">
 					<div class="blog-post-area">
 						<h2 class="title text-center">Latest From our Blog</h2>
 						<div class="single-blog-post">
@@ -168,7 +169,7 @@
 							</div>
 						</div>
 					</div><!--/Repaly Box-->
-
+</div>
 @endsection()
 <script src="{{ asset('client/js/jquery-1.9.1.min.js') }}"></script>
     <script>

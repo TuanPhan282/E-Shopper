@@ -1,6 +1,7 @@
 @extends('client.layouts.app')
 @section('content')
-
+@include('client.layouts.menu-left')
+<div class="col-sm-9 padding-right">
 <div class="blog-post-area">
 	<h2 class="title text-center">Latest From our Blog</h2>
 @foreach($data as $val)
@@ -38,6 +39,7 @@
 
 <div style="margin-top: 50px" class="d-flex justify-content-center ">
     {{ $data->links() }}
+</div>
 </div>
 
 @endsection()

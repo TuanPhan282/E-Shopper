@@ -55,9 +55,15 @@
 
     @include('client.layouts.header')
 
-    @include('client.layouts.slide')
-
-    @include('client.layouts.contents')
+    @yield('slide')
+    
+    <section>
+		<div class="container">
+			<div class="row">
+                @yield('content')
+			</div>
+		</div>
+	</section>
 
     @include('client.layouts.footer')
 
