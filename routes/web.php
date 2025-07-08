@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminCountryController;
+use App\Http\Controllers\Admin\AdminBlogController;
+use App\Http\Controllers\Admin\AdminBrandController;
+use App\Http\Controllers\Admin\OnePageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\LoginController;
@@ -9,8 +15,6 @@ use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\CauThuController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\OnePageController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,12 +74,18 @@ Route::get('/account/update', [ClientController::class,'getUpdateAccount']);
 Route::post('/account/update', [ClientController::class,'postUpdateAccount']);
 
 Route::get('/account/my-product', [ProductController::class,'getMyProduct']);
+Route::get('/account/add-product', [ProductController::class,'getAddProduct']);
+Route::post('/account/add-product', [ProductController::class,'postAddProduct']);
+Route::get('/account/edit-product/{id}', [ProductController::class,'getEditProduct']);
+Route::post('/account/edit-product/{id}', [ProductController::class,'postEditProduct']);
+Route::get('/account/delete-product/{id}', [ProductController::class,'deleteProduct']);
+
 
 // - Admin
 
 Route::group([
-    // 'prefix' => 'admin', // tiền tố admin đứng trước 
-    'middleware' => ['admin'],
+    'prefix' => 'admin', // tiền tố admin đứng trước 
+    // 'middleware' => ['admin'],
 
 ], function(){
 
@@ -83,17 +93,31 @@ Route::group([
     Route::get('/profile',[UserController::class,'index']);
     Route::post('/profile',[UserController::class,'postUpdateProfile']);
     
-    Route::get('/country',[UserController::class,'getCountry']);
-    Route::get('/add-country' ,[UserController::class,'getAddCountry']);
-    Route::post('/add-country' ,[UserController::class,'postAddCountry']);
-    Route::get('/delete-country/{id}' ,[UserController::class,'deleteCountry']);
+    // Country
+    Route::get('/country',[AdminCountryController::class,'getCountry']);
+    Route::get('/add-country' ,[AdminCountryController::class,'getAddCountry']);
+    Route::post('/add-country' ,[AdminCountryController::class,'postAddCountry']);
+    Route::get('/delete-country/{id}' ,[AdminCountryController::class,'deleteCountry']);
+
+    // Catalog
+    Route::get('/category',[AdminCategoryController::class,'getCategory']);
+    Route::get('/add-category' ,[AdminCategoryController::class,'getAddCategory']);
+    Route::post('/add-category' ,[AdminCategoryController::class,'postAddCategory']);
+    Route::get('/delete-category/{id}' ,[AdminCategoryController::class,'deleteCategory']);
+
+    // Brand
+    Route::get('/brand',[AdminBrandController::class,'getBrand']);
+    Route::get('/add-brand' ,[AdminBrandController::class,'getAddBrand']);
+    Route::post('/add-brand' ,[AdminBrandController::class,'postAddBrand']);
+    Route::get('/delete-brand/{id}' ,[AdminBrandController::class,'deleteBrand']);
     
-    Route::get('/list-blog',[UserController::class,'getBlog']);
-    Route::get('/add-blog' ,[UserController::class,'getAddBlog']);
-    Route::post('/add-blog' ,[UserController::class,'postAddBlog']);
-    Route::get('/edit-blog/{id}' ,[UserController::class,'getEditBlog']);
-    Route::post('/edit-blog/{id}' ,[UserController::class,'postEditBlog']);
-    Route::get('/delete-blog/{id}' ,[UserController::class,'deleteBlog']);
+    // Blog
+    Route::get('/list-blog',[AdminBlogController::class,'getBlog']);
+    Route::get('/add-blog' ,[AdminBlogController::class,'getAddBlog']);
+    Route::post('/add-blog' ,[AdminBlogController::class,'postAddBlog']);
+    Route::get('/edit-blog/{id}' ,[AdminBlogController::class,'getEditBlog']);
+    Route::post('/edit-blog/{id}' ,[AdminBlogController::class,'postEditBlog']);
+    Route::get('/delete-blog/{id}' ,[AdminBlogController::class,'deleteBlog']);
 });
 
 

@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Country;
 
-class BrandController extends Controller
+class AdminCountryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +14,38 @@ class BrandController extends Controller
     public function index()
     {
         //
+    }
+
+    public function getCountry()
+    {
+        $data = Country::all();
+        return view('admin/country/country',compact('data'));
+    }
+    
+    public function getAddCountry(  ) 
+    {
+        return view('admin/country/add-country');
+    }
+    public function postAddCountry( Request $request)
+    {
+        $data = $request->all();
+
+        if(Country::create($data)){
+            return redirect('admin/country');
+        }else{
+            return redirect('admin/country');
+        }
+    }
+
+    public function deleteCountry( string $id)
+    {
+        $country = Country::where('id', $id);
+
+        if($country->delete()){
+            return redirect('admin/country');
+        }else{
+            return redirect('admin/country');
+        }
     }
 
     /**

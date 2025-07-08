@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Brand;
 
-class CategoryController extends Controller
+class AdminBrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,37 @@ class CategoryController extends Controller
         //
     }
 
+    public function getBrand()
+    {
+        $data = Brand::all();
+        return view('admin/brand/brand',compact('data'));
+    }
+    
+    public function getAddBrand(  ) 
+    {
+        return view('admin/brand/add-brand');
+    }
+    public function postAddBrand( Request $request)
+    {
+        $data = $request->all();
+
+        if(Brand::create($data)){
+            return redirect('admin/brand');
+        }else{
+            return redirect('admin/brand');
+        }
+    }
+
+    public function deleteBrand( string $id)
+    {
+        $country = Brand::where('id', $id);
+
+        if($country->delete()){
+            return redirect('admin/brand');
+        }else{
+            return redirect('admin/brand');
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

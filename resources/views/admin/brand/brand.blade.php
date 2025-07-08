@@ -55,14 +55,14 @@
                                         <tr>
                                             <th scope="row">{{ $val['id'] }}</th>
                                             <td>{{ $val['name'] }}</td>
-                                            <td><a href="{{ url('/delete-country/' . $val['id']) }}">Delete</a></td>
+                                            <td><a href="{{ url('admin/delete-brand/' . $val['id']) }}">Delete</a></td>
                                         </tr>
                                         @endforeach
 
                                     </tbody>
                                 </table>
                                 <div class="flex justify-end">
-                                    <button><a href="{{url('admin/add-country')}}">Add Country</a></button>
+                                    <button><a href="{{url('admin/add-brand')}}">Add Brand</a></button>
                                 </div>
                             </div>
                         </div>
