@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Product;
 use App\Models\Country;
 
 class ClientController extends Controller
@@ -18,7 +19,23 @@ class ClientController extends Controller
 
     public function getClient()
     {
-        return view('client/index');
+        $productLatest = Product::OrderBy('created_at','desc')->take(6)->get();
+        foreach ($productLatest as $product) {
+            $images = json_decode($product->images, true);
+            $product->first_image = $images[0]?? null;
+        }
+        // dd($productLatest);
+        return view('client/index', compact('productLatest'));
+    }
+
+    public function getProductDetail(string $id)
+    {
+        $product = Product::where('id', $id)->first();
+        // $userId = Auth::id();
+        
+        $product->images = json_decode($product->images, true);
+        // dd($productLatest);
+        return view('client/product/detailProduct', compact('product'));
     }
 
     public function getUpdateAccount()

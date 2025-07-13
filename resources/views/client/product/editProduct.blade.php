@@ -101,7 +101,7 @@
                                     <div style="display: flex; gap: 20px; align-items: center">
                                         @foreach($product->images as $val)
                                         <div>
-                                            <img src="{{asset('/upload/product/hinh85x84_'.$val)}}" alt="">
+                                            <img src="{{ asset('/upload/product/'. $product->userId.'/hinh85x84_'.$val)}}" alt="">
                                             <input type="checkbox" name="removeImages[]" value="{{$val}}">
                                         </div>
                                         @endforeach

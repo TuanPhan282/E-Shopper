@@ -44,7 +44,7 @@
 								@foreach($data as $val)
 									<tr>
 										<td class="cart_product">
-											<a href=""><img src="{{ asset('/upload/product/hinh85x84_'.$val->first_image)}}" alt=""></a>
+											<a href=""><img src="{{ asset('/upload/product/'. $val->userId.'/hinh85x84_'.$val->first_image)}}" alt=""></a>
 										</td>
 										<td class="cart_description">
 											<h4><a href="">{{$val->name}}</a></h4>
@@ -63,6 +63,9 @@
 								@endforeach
 							</tbody>
 						</table>
+						<div style="margin-top: 50px" class="d-flex justify-content-center ">
+							{{ $data->links() }}
+						</div>
                         <a class="btn btn-primary level-n" href="{{ url('/account/add-product') }}">Add New</a>
 					</div>
 				</div>

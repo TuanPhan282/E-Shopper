@@ -17,12 +17,41 @@ class ProductController extends Controller
     {
         $this-> middleware('auth'); 
     }
+
+    public function saveImageControl( $images, $userId){
+        $imageNames = [];
+    if (!empty($images)) {
+        foreach ($images as $val) {
+            $imgName = $val->getClientOriginalName(); 
+            $imgName2 = 'hinh85x84_' . $imgName; 
+            $imgName3 = 'hinh329x380_' . $imgName; 
+
+            $image = Image::read($val);
+
+            // Lưu ảnh gốc
+            if(is_dir('upload/product/'. $userId) == false ){
+                mkdir('upload/product/'. $userId);
+            }
+            $image->save(public_path('upload/product/'. $userId.'/' . $imgName));
+
+            // Lưu ảnh resize
+            $image->resize(85, 84)->save(public_path('upload/product/' . $userId.'/' . $imgName2));
+            $image->resize(329, 380)->save(public_path('upload/product/' . $userId.'/' . $imgName3));
+
+            $imageNames[] = $imgName;
+        }
+    }
+
+   
+        return $dataImages = $imageNames;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function getMyProduct()
     {
-        $data = Product::all();
+        $data = Product::paginate(5);
         foreach ($data as $product) {
             $images = json_decode($product->images, true);
             $product->first_image = $images[0]?? null;
@@ -38,36 +67,15 @@ class ProductController extends Controller
     }
 
 
-public function postAddProduct(AddOrEditProductRequest $request)
+public function postAddProduct(Request $request)
 {
     $data = $request->except(['images']);
     $images = $request->images;
     // dd($images);
     $data['userId'] = Auth::id();
+    // dd($data['userId']);
 
-    $imageNames = [];
-
-    if (!empty($images)) {
-        foreach ($images as $val) {
-            $imgName = $val->getClientOriginalName(); 
-            $imgName2 = 'hinh85x84_' . $imgName; 
-            $imgName3 = 'hinh329x380_' . $imgName; 
-
-            $image = Image::read($val);
-
-            // Lưu ảnh gốc
-            $image->save(public_path('upload/product/' . $imgName));
-
-            // Lưu ảnh resize
-            $image->resize(85, 84)->save(public_path('upload/product/' . $imgName2));
-            $image->resize(329, 380)->save(public_path('upload/product/' . $imgName3));
-
-            $imageNames[] = $imgName;
-        }
-    }
-
-   
-    $data['images'] = json_encode($imageNames);
+    $data['images'] = json_encode($this->saveImageControl($images, $data['userId']));
 
     if (Product::create($data)) {
         return redirect('account/my-product')->with('success', 'Create product successfully!');
@@ -108,38 +116,17 @@ public function getEditProduct(string $id)
         $currentImages = json_decode($product->images, true);
         if($removeImages){
             foreach ($removeImages as $val) {
-                @unlink(public_path('upload/product/'. $val));
-                @unlink(public_path('upload/product/hinh85x84_'. $val));
-                @unlink(public_path('upload/product/hinh329x380_'. $val));
+                @unlink(public_path('upload/product/'.$data['userId'].'/'. $val));
+                @unlink(public_path('upload/product/'.$data['userId'].'/hinh85x84_'. $val));
+                @unlink(public_path('upload/product/'.$data['userId'].'/hinh329x380_'. $val));
 
                 $currentImages = array_filter($currentImages, function($item) use ($val){
                     return $item != $val;
                 });
             }
-        }
+        }        
 
-        
-        $imageNames = [];
-        if (!empty($images)) {
-            foreach ($images as $val) {
-                $imgName = $val->getClientOriginalName(); 
-                $imgName2 = 'hinh85x84_' . $imgName; 
-                $imgName3 = 'hinh329x380_' . $imgName; 
-
-                $image = Image::read($val);
-
-                // Lưu ảnh gốc
-                $image->save(public_path('upload/product/' . $imgName));
-                // Lưu ảnh resize
-                $image->resize(85, 84)->save(public_path('upload/product/' . $imgName2));
-                $image->resize(329, 380)->save(public_path('upload/product/' . $imgName3));
-
-                $imageNames[] = $imgName;
-            }
-        };
-        
-
-        $data['images'] = json_encode(array_merge($currentImages, $imageNames));
+        $data['images'] = json_encode(array_merge($currentImages, $this->saveImageControl($images, $data['userId'])));
 
         if ($product->update($data)) {
             return redirect('account/my-product')->with('success', 'Edit product successfully!');
@@ -147,6 +134,8 @@ public function getEditProduct(string $id)
             return redirect('account/edit-product')->withErrors('Edit product unsuccessfully!');
         }
     }
+
+
 
     public function deleteProduct(string $id){
         $product = Product::where('id', $id);

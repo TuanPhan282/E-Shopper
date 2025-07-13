@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminBrandController;
 use App\Http\Controllers\Admin\OnePageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Client\RegisterController;
 use App\Http\Controllers\Client\BlogController;
@@ -59,6 +60,10 @@ Route::post('/login-user',[LoginController::class,'postLogin']);
 Route::get('/blog-list',[BlogController::class,'getBlogList']);
 Route::post('/blog-list',[BlogController::class,'postBlogList']);
 Route::get('/blog-single/{id}',[BlogController::class,'getBlogSingle']);
+
+Route::get('/product-detail/{id}',[ClientController::class,'getProductDetail']);
+Route::post('/product-detail/add-to-cart/ajax',[CartController::class,'postAddToCartAjax']);
+
 
 
 // Yêu cầu đăng nhập
