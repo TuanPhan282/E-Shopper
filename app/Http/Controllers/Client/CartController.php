@@ -11,20 +11,44 @@ class CartController extends Controller
 
     public function postAddToCartAjax(Request $request)
     {
-        $product = Product::where('id', $request->id)->first();
+        $product = Product::where('id', $request->id)->first()->toArray();
         $product['qty'] = $request->qty;
 
+        // session()->forget('cart');
+        $cart = session()->get('cart');
         if(session()->has('cart')){
-            $ss = session()->get('cart');
-            $ss['qty'] = $request->qty;
+            $has_id = false;
+            foreach($cart as $key => $val){
+                if($val['id'] == $product['id']){
+                    $cart[$key]['qty'] = $request->qty;
+                    $has_id = true;
+                    break;
+                }
+            }
+            if(!$has_id){
+                $cart[] = $product;
+            }
 
-            session()->put('cart', $ss);
+            session()->put('cart', $cart);
             
-            return response()->json(['product' => session()->get('cart')]);
+            return response()->json(['product' => $cart]);
         }else{
             session()->push('cart', $product);      
-            return response()->json(['product' => "Chua co session"]);     
+            return response()->json(['product' => $product]);     
         }
+    }
+
+
+    public function getCart()
+    {
+        $cart = session()->get('cart');
+        if($cart){
+            foreach($cart as $key => $val){
+                $cart[$key]['images'] = json_decode($val['images'],true);
+            }
+        }
+        // dd($cart);
+        return view('client/cart/cart', compact('cart'));
     }
     /**
      * Display a listing of the resource.

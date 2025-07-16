@@ -63,7 +63,10 @@ Route::get('/blog-single/{id}',[BlogController::class,'getBlogSingle']);
 
 Route::get('/product-detail/{id}',[ClientController::class,'getProductDetail']);
 Route::post('/product-detail/add-to-cart/ajax',[CartController::class,'postAddToCartAjax']);
-
+Route::get('/cart',[CartController::class,'getCart']);
+Route::post('/cart/cart-qty-up/ajax',[CartController::class,'postCartQtyUpAjax']);
+Route::post('/cart/cart-qty-down/ajax',[CartController::class,'postCartQtyDownAjax']);
+Route::post('/cart/cart-qty-delete/ajax',[CartController::class,'postCartQtyDeleteAjax']);
 
 
 // Yêu cầu đăng nhập
