@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -27,22 +28,36 @@ class LoginController extends Controller
     public function postLogin(Request $request)
     {
         
-        $login = [
-            'email' => $request->email,
-            'password' => $request->password,
-            'level' => 0
-        ];
+            $login = [
+                'email' => $request->email,
+                'password' => $request->password
+            ];
 
-        $remember = false;
+            $user = User::where('email', $login['email'])->first();
 
-        if($request->remember_me){
-            $remember = true;
-        }
+            
+            if($user){
+                $login['level'] = $user->level;
+            }
+            else{
+                return redirect()->back()->withErrors('Email not found.');
+            }
 
-        if(Auth::attempt($login, $remember)){
-            return redirect('/')->with('success', 'Login Successfully!');
-        }else{
-            return redirect()->back()->withErrors('Email or Password not correct.');
-        }
+            $remember = false;
+
+            if($request->remember_me){
+                $remember = true;
+            }
+
+            if(Auth::attempt($login, $remember)){
+                // dd($user->level);
+                if(Auth::user()->level == 1){
+                    return redirect('admin/dashboard')->with('success', 'Login Admin Successfully!');
+                }else{
+                    return redirect('/')->with('success', 'Login Successfully!');
+                }
+            }else{
+                return redirect()->back()->withErrors('Email or Password not correct.');
+            }
     }
 }

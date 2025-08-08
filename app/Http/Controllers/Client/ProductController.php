@@ -78,7 +78,8 @@ public function postAddProduct(Request $request)
     $data['images'] = json_encode($this->saveImageControl($images, $data['userId']));
 
     if (Product::create($data)) {
-        return redirect('account/my-product')->with('success', 'Create product successfully!');
+        // return redirect('account/my-product')->with('success', 'Create product successfully!');
+        return response()->json($data, 201);
     } else {
         return redirect('account/add-product')->withErrors('Create product unsuccessfully!');
     }

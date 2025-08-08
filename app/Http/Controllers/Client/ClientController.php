@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Country;
+use App\Models\Brand;
+use App\Models\Category;
 
 class ClientController extends Controller
 {
@@ -19,13 +21,15 @@ class ClientController extends Controller
 
     public function getClient()
     {
-        $productLatest = Product::OrderBy('created_at','desc')->take(6)->get();
+        $productLatest = Product::OrderBy('created_at','desc')->paginate(6);
+        $brands = Brand::all();
+        $categories = Category::all();
         foreach ($productLatest as $product) {
             $images = json_decode($product->images, true);
             $product->first_image = $images[0]?? null;
         }
         // dd($productLatest);
-        return view('client/index', compact('productLatest'));
+        return view('client/index', compact('productLatest', 'brands', 'categories'));
     }
 
     public function getProductDetail(string $id)

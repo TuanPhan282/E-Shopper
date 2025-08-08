@@ -374,7 +374,7 @@
 
 				$.ajax({
 					type: 'POST',
-					url: '{{ url("product-detail/add-to-cart/ajax")}}',
+					url: '{{ url("cart/update-product-qty/ajax")}}',
 					data: {
 						id: id_product,
 						qty: qty,

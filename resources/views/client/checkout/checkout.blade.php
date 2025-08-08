@@ -8,9 +8,48 @@
 			<div class="breadcrumbs">
 				<ol class="breadcrumb">
 				  <li><a href="#">Home</a></li>
-				  <li class="active">Shopping Cart</li>
+				  <li class="active">Check out</li>
 				</ol>
+			</div><!--/breadcrums-->
+
+			<!-- <div class="step-one">
+				<h2 class="heading">Step1</h2>
 			</div>
+			<div class="checkout-options">
+				<h3>New User</h3>
+				<p>Checkout options</p>
+				<ul class="nav">
+					<li>
+						<label><input type="checkbox"> Register Account</label>
+					</li>
+					<li>
+						<label><input type="checkbox"> Guest Checkout</label>
+					</li>
+					<li>
+						<a href=""><i class="fa fa-times"></i>Cancel</a>
+					</li>
+				</ul>
+			</div>/checkout-options -->
+
+			<!-- <div class="register-req"> -->
+				<!-- <p>Please use Register And Checkout to easily get access to your order history, or use Checkout as Guest</p> -->
+			<!-- </div>/register-req -->
+
+			@if(!Auth::Check())
+
+				<span>You need login before checkout</span>
+				<a href="{{ url('login-user')}}"  class="btn btn-success">Login</a>
+				<span>Or</span>
+				<a href="{{ url('register-user')}}" class="btn btn-success">Register</a>
+
+			@else
+				<a class="btn btn-primary" href="{{ url('test')}}">Continue</a>
+			@endif
+			
+			<div class="review-payment">
+				<h2>Review & Payment</h2>
+			</div>
+
 			<div class="table-responsive cart_info">
 				<table class="table table-condensed">
 					<thead>
@@ -53,6 +92,29 @@
 								</td>
 							</tr>
 							@endforeach
+							<tr>
+							<td colspan="4">&nbsp;</td>
+							<td colspan="2">
+								<table class="table table-condensed total-result">
+									<tr>
+										<td>Cart Sub Total</td>
+										<td>$59</td>
+									</tr>
+									<tr>
+										<td>Exo Tax</td>
+										<td>$2</td>
+									</tr>
+									<tr class="shipping-cost">
+										<td>Shipping Cost</td>
+										<td>Free</td>										
+									</tr>
+									<tr>
+										<td>Total</td>
+										<td class="total_price_all_product"><span>$</span></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
 						@else
 							<tr>
 								<td>Chưa có sản phẩm</td>	
@@ -61,87 +123,21 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-	</section> <!--/#cart_items-->
-
-	<section id="do_action">
-		<div class="container">
-			<div class="heading">
-				<h3>What would you like to do next?</h3>
-				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-			</div>
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="chose_area">
-						<ul class="user_option">
-							<li>
-								<input type="checkbox">
-								<label>Use Coupon Code</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Use Gift Voucher</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Estimate Shipping & Taxes</label>
-							</li>
-						</ul>
-						<ul class="user_info">
-							<li class="single_field">
-								<label>Country:</label>
-								<select>
-									<option>United States</option>
-									<option>Bangladesh</option>
-									<option>UK</option>
-									<option>India</option>
-									<option>Pakistan</option>
-									<option>Ucrane</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-								
-							</li>
-							<li class="single_field">
-								<label>Region / State:</label>
-								<select>
-									<option>Select</option>
-									<option>Dhaka</option>
-									<option>London</option>
-									<option>Dillih</option>
-									<option>Lahore</option>
-									<option>Alaska</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-							
-							</li>
-							<li class="single_field zip-field">
-								<label>Zip Code:</label>
-								<input type="text">
-							</li>
-						</ul>
-						<a class="btn btn-default update" href="">Get Quotes</a>
-						<a class="btn btn-default check_out" href="">Continue</a>
-					</div>
+			<div class="payment-options">
+					<span>
+						<label><input type="checkbox"> Direct Bank Transfer</label>
+					</span>
+					<span>
+						<label><input type="checkbox"> Check Payment</label>
+					</span>
+					<span>
+						<label><input type="checkbox"> Paypal</label>
+					</span>
 				</div>
-				<div class="col-sm-6">
-					<div class="total_area">
-						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li class="total_price_all_product">Total <span>$61</span></li>
-						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
-					</div>
-				</div>
-			</div>
 		</div>
-	</section><!--/#do_action-->
+</section> <!--/#cart_items-->
 
-	<script src="{{ asset('client/js/jquery-1.9.1.min.js') }}"></script>
+<script src="{{ asset('client/js/jquery-1.9.1.min.js') }}"></script>
 	<script>
 		$(document).ready(function(){
 			$.ajaxSetup({
@@ -212,7 +208,7 @@
 						qty: new_qty,
 					},
 					success: function(data) {
-							console.log(data); 
+							console.log(data); // Hiển thị kết quả trả về từ server
 						}
 				})
 			})

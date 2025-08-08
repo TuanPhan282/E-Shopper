@@ -64,7 +64,7 @@
 								@endif
 								
 								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="{{url('/checkout')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="{{url('/cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								@if(Auth::Check())
 									<li class="logout"><a href="{{ url('logout-user') }}"><i class="fa fa-lock"></i> logout</a></li>
@@ -114,9 +114,14 @@
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
-						</div>
+						<form action="{{ url('/search') }}" >
+
+							<div class="search_box pull-right">
+								<input class="search-input" name="name" type="text" placeholder="Search"/>
+								<!-- <a class="search-button" href="">Search</a> -->
+								<button class="" type="submit">Search</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -126,5 +131,15 @@
 	<script src="{{ asset('client/js/jquery-1.9.1.min.js') }}"></script>
 	<script>
 		$(document).ready(function(){
+			$('.search-button').click(function(e){
+				e.preventDefault();
+
+			var searchValue = $('.search-input').val().trim();
+			if (searchValue !== '') {
+				window.location.href = 'search/' + encodeURIComponent(searchValue);
+			}
+			})
 		})
 	</script>
+
+	

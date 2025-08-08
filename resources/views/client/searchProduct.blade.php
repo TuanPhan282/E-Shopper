@@ -1,16 +1,11 @@
 
 @extends('client.layouts.app')
 
-@section('slide')
-    @include('client.layouts.slide')
-@endsection
-
 @section('content')
 @include('client.layouts.menu-left')
 <div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
-
 						<form action="{{ url('/search')}}">
 							<div class="col-sm-4" 
 							style="
@@ -54,9 +49,7 @@
 							</div>
 						</form>
 
-						<div class="product_list">
-
-							@foreach($productLatest as $val)
+						@foreach($products as $val)
 							<div class="col-sm-4">
 								<div class="product-image-wrapper">
 									<div class="single-products">
@@ -82,13 +75,13 @@
 									</div>
 								</div>
 							</div>
-							@endforeach
+						@endforeach
+
+                        <div style="margin-top: 50px" class="d-flex justify-content-center ">
+							{{ $products->links() }}
 						</div>
 						
 					</div><!--features_items-->
-						<div style="margin-top: 50px" class="d-flex justify-content-center ">
-							{{ $productLatest->links() }}
-						</div>
 
 					
 					<div class="category-tab"><!--category-tab-->
@@ -477,87 +470,4 @@
 					</div><!--/recommended_items-->
 					
 </div>
-
-<script src="{{ asset('client/js/jquery-1.9.1.min.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
-<script>
-	$(document).ready(function(){
-		$.ajaxSetup({
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-		$('.search-price').click( function(){
-			console.log('click');
-			
-			var price = $(this).find('.tooltip-inner').text();
-			var range = price.split(':').map(p => parseInt(p.trim()));
-			// var range = JSON.parse(price);
-			console.log(range);
-			
-			const [min, max] = range;
-
-			$.ajax({
-				type: 'POST',
-				url: '{{ url("search-price/ajax")}}', 
-				data: {
-					min: min,
-					max: max,
-				},
-				success: function (res) {
-					console.log(res);
-
-					var htmls= '';
-					
-					res[0].data.forEach(product => {
-						htmls += `
-							<div class="col-sm-4">
-								<div class="product-image-wrapper">
-									<div class="single-products">
-										<div class="productinfo text-center">
-											<img src="{{ asset('/upload/product/${product.userId}/hinh329x380_${product.first_image}')}}" alt="" />
-											<h2>$${product.price}</h2>
-											<p>${product.name}</p>
-											<a href="#" class="btn btn-default add-to-cart">
-												<i class="fa fa-shopping-cart"></i> Add to cart
-											</a>
-										</div>
-										<div class="product-overlay">
-											<div class="overlay-content">
-												<h2>$${product.price}</h2>
-												<p>${product.name}</p>
-												<a href="#" class="btn btn-default add-to-cart">
-													<i class="fa fa-shopping-cart"></i> Add to cart
-												</a>
-											</div>
-										</div>
-									</div>
-									<div class="choose">
-										<ul class="nav nav-pills nav-justified">
-											<li><a href="#"><i class="fa fa-plus-square"></i> Add to wishlist</a></li>
-											<li><a href="/product-detail/${product.id}">
-												<i class="fa fa-plus-square"></i> Detail</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						`;
-					});
-
-				$('.product_list').html(htmls);
-					
-				},
-				error: function () {
-					alert('Lỗi khi lọc sản phẩm');
-				}
-			})
-		})	
-
-		
-		
-  });
-</script>
 @endsection()
